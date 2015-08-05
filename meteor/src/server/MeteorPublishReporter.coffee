@@ -86,7 +86,7 @@ class practical.mocha.MeteorPublishReporter extends practical.mocha.BaseReporter
       @runner.on 'pending', (test)=>
         try
           log.enter 'onPending', arguments
-          log.info "test", test
+          log.debug "test", test
           @added 'pending', @cleanTest(test)
         finally
           log.return()

@@ -31,8 +31,9 @@ class practical.mocha.ClientServerReporter
       expect(doc).to.be.an('object')
       expect(doc.event).to.be.a('string')
 
-      if doc.event is "spacejam" and doc.data?
-        @spacejamReporter = new practical.mocha.SpacejamReporter(@clientRunner, @serverRunnerProxy)
+      if doc.event is "spacejam"
+        if doc.data is true
+          @spacejamReporter = new practical.mocha.SpacejamReporter(@clientRunner, @serverRunnerProxy)
         return
 
       expect(doc.data).to.be.an('object')
