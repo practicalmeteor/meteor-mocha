@@ -135,8 +135,7 @@ function HTML(runner, options) {
     test.body = test.body || test.fn.toString();
     // For type = 'test' its possible that the test failed due to multiple
     // done() calls. So report the issue here.
-    if (test.type === 'hook'
-      || test.type === 'test') {
+    if (test.type === 'hook') {
       runner.emit('test end', test);
     }
   });

@@ -1,10 +1,11 @@
-BaseReporter      = require("./BaseReporter")
-{ObjectLogger}    = require("meteor/practicalmeteor:loglevel")
-MochaHtmlReporter = require("./html")
+{ObjectLogger}            = require("meteor/practicalmeteor:loglevel")
+MochaHtmlReporter         = require("./html")
+ClientServerBaseReporter  = require("./ClientServerBaseReporter")
+MochaRunner = require("../lib/MochaRunner")
 
 log = new ObjectLogger('HtmlReporter', 'info')
 
-class HtmlReporter extends BaseReporter
+class HtmlReporter extends ClientServerBaseReporter
 
   constructor: (@clientRunner, @serverRunner, @options = {})->
     try
@@ -15,6 +16,7 @@ class HtmlReporter extends BaseReporter
       @serverReporter = new MochaHtmlReporter(@serverRunner, {
         elementIdPrefix: 'server-'
       })
+      super(@clientRunner, @serverRunner, @options)
     finally
       log.return()
 

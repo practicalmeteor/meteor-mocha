@@ -1,5 +1,6 @@
-MochaRunner  = require("./../lib/MochaRunner")
-MirrorReporter = require('./MirrorReporter')
+{_}             = require("underscore")
+MochaRunner     = require("./../lib/MochaRunner")
+MirrorReporter  = require('./MirrorReporter')
 {ObjectLogger}  = require("meteor/practicalmeteor:loglevel")
 {EventEmitter}  = require("events")
 
@@ -18,27 +19,49 @@ class ClientServerReporter
         @runTestsSerially(@clientRunner, @serverRunnerProxy)
 
       if not MochaRunner.reporter
-        log.error("Missing reporter to run tests. Use MochaRunner.setReporter(reporter) to set one.")
+        log.info("Missing reporter to run tests. Use MochaRunner.setReporter(reporter) to set one.")
         return
 
       @reporter = new MochaRunner.reporter(@clientRunner, @serverRunnerProxy, @options)
 
-      MochaRunner.serverRunEvents.find().observe( {
-        added: _.bind(@onServerRunnerEvent, @)
-      })
+      # we use nonreactive here because this constructor is called in an
+      # autorun, and we don't want our autorun to be cancelled when the
+      # parent is cancelled
+      Tracker.nonreactive =>
+        Tracker.autorun =>
+          isConnected = Meteor.connection.status().connected
+          if isConnected
+            @initObserver()
 
       # Exposes global states of tests
       @clientRunner.on "start", ->
         window.mochaIsRunning = true
 
-      @clientRunner.on "end", ->
+      @clientRunner.on "end", =>
         window.mochaIsRunning = false
         window.mochaIsDone = true
 
+        MochaRunner.emit("end client")
+        @clientTestsEnded = true
+        if @serverTestsEnded
+          MochaRunner.emit("end all")
+
+      @serverRunnerProxy.on 'end', =>
+        @serverTestsEnded = true
+        MochaRunner.emit("end server")
+        if @clientTestsEnded
+          MochaRunner.emit("end all")
 
     finally
       log.return()
 
+  initObserver: () =>
+    if @observer
+      @observer.stop()
+
+    @observer = MochaRunner.serverRunEvents.find().observe( {
+      added: _.bind(@onServerRunnerEvent, @)
+    })
 
   runTestsSerially: (clientRunner, serverRunnerProxy)=>
     try
@@ -77,7 +100,7 @@ class ClientServerReporter
         @serverRunnerProxy.stats = doc.data
         @serverRunnerProxy.total = doc.data.total
 
-      @serverRunnerProxy.emit(doc.event, doc.data,  doc.data.err)
+      @serverRunnerProxy.emit(doc.event, doc.data, doc.data.err)
 
     catch ex
       log.error ex

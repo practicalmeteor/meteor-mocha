@@ -17,9 +17,8 @@ standard-minifier-js    # JS minifier run for production mode
 es5-shim                # ECMAScript 5 compatibility for older browsers.
 ecmascript              # Enable ECMAScript2015+ syntax in app code
 
-autopublish             # Publish all data to the clients (for prototyping)
 insecure                # Allow all DB writes from clients (for prototyping)
-practicalmeteor:mocha@2.4.5_1
+practicalmeteor:mocha@=2.4.5-rc3.3
 practicalmeteor:chai
 practicalmeteor:loglevel
-practicalmeteor:mocha-console-runner@0.2.0
+test-package
