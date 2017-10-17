@@ -7,16 +7,19 @@ log = new ObjectLogger('HtmlReporter', 'info')
 
 class HtmlReporter extends ClientServerBaseReporter
 
-  constructor: (@clientRunner, @serverRunner, @options = {})->
+  constructor: (clientRunner, serverRunner, options = {})->
     try
       log.enter('constructor')
+      super(clientRunner, serverRunner, options)
+      @clientRunner = clientRunner
+      @serverRunner = serverRunner
+      @options = options
       @addReporterHtml()
 
       @reporter = new MochaHtmlReporter(@clientRunner)
       @serverReporter = new MochaHtmlReporter(@serverRunner, {
         elementIdPrefix: 'server-'
       })
-      super(@clientRunner, @serverRunner, @options)
     finally
       log.return()
 

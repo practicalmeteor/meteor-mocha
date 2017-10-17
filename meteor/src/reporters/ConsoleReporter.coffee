@@ -8,10 +8,13 @@ log = new ObjectLogger('ConsoleReporter', 'info')
 class ConsoleReporter extends  ClientServerBaseReporter
 
 
-  constructor: (@clientRunner, @serverRunner, @options)->
+  constructor: (clientRunner, serverRunner, options)->
     try
       log.enter('constructor')
-      super(@clientRunner, @serverRunner, @options)
+      super(clientRunner, serverRunner, options)
+      @clientRunner = clientRunner
+      @serverRunner = serverRunner
+      @options = options
       MochaRunner.on "end all", => @finishAndPrintTestsSummary()
 
     finally

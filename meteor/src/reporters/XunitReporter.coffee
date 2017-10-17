@@ -6,7 +6,11 @@ class XUnitReporter extends ConsoleReporter
   @VERSION: "0.1.0"
   xUnitPrefix: "##_meteor_magic##xunit: "
 
-  constructor:(@clientRunner, @serverRunner, @options)->
+  constructor:(clientRunner, serverRunner, options)->
+    super(clientRunner, serverRunner, options)
+    @clientRunner = clientRunner
+    @serverRunner = serverRunner
+    @options = options
 
     @clientTests = []
     @serverTests = []
@@ -14,8 +18,6 @@ class XUnitReporter extends ConsoleReporter
     # ConsoleReporter exposes global variables that indicates when the tests has finished,
     # so we register the event to print the test suite before ConsoleReporter register its event
     MochaRunner.on "end all", => @printTestSuite()
-
-    super(@clientRunner, @serverRunner, @options)
 
 
   ###
