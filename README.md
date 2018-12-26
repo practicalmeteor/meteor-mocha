@@ -1,6 +1,6 @@
 # This project is no longer maintained and has been superceded by meteortesting:mocha
 
-Due to leaving the meteor community, this project is no longer maintained by it's owners and contributors and has been taken out of [meteor's official guide](https://guide.meteor.com/testing.html#mocha) in favor of the [meteortesting:mocha](https://atmospherejs.com/meteortesting/mocha) package.
+Due to leaving the meteor community, this project (and all of it's related projects) is no longer maintained by it's owners and contributors and has been taken out of [meteor's official guide](https://guide.meteor.com/testing.html#mocha) in favor of the [meteortesting:mocha](https://atmospherejs.com/meteortesting/mocha) package.
 
 [![Build Status](https://travis-ci.org/practicalmeteor/meteor-mocha.svg?branch=meteor)](https://travis-ci.org/practicalmeteor/meteor-mocha)
 
