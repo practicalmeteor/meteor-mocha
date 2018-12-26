@@ -1,4 +1,6 @@
+<!---
 [![Build Status](https://travis-ci.org/practicalmeteor/meteor-mocha.svg?branch=meteor)](https://travis-ci.org/practicalmeteor/meteor-mocha)
+--->
 
 # This project is no longer maintained and has been superceded by meteortesting:mocha
 
